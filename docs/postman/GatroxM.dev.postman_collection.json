@@ -1,0 +1,130 @@
+{
+  "info": {
+    "name": "GatroxM.dev API",
+    "description": "Colección Postman para demostrar la API REST de GatroxM.dev (GA8-220501096-AA1-EV01). Base URL: http://localhost:3000/api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Proyectos",
+      "item": [
+        {
+          "name": "Listar proyectos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/proyectos"
+          }
+        },
+        {
+          "name": "Crear proyecto",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Sistema de inventario\",\n  \"descripcion\": \"Aplicación web para control de inventarios\",\n  \"cliente\": \"Empresa ABC\",\n  \"estado\": \"propuesta\",\n  \"presupuesto\": 15000,\n  \"fechaInicio\": \"2026-01-10\",\n  \"fechaEntrega\": \"2026-06-30\",\n  \"tecnologias\": []\n}"
+            },
+            "url": "{{baseUrl}}/proyectos"
+          }
+        },
+        {
+          "name": "Consultar proyecto por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/proyectos/:id"
+          }
+        },
+        {
+          "name": "Actualizar proyecto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"en_progreso\"\n}"
+            },
+            "url": "{{baseUrl}}/proyectos/:id"
+          }
+        },
+        {
+          "name": "Eliminar proyecto",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/proyectos/:id"
+          }
+        },
+        {
+          "name": "Resumen del portafolio",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/proyectos/resumen"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tecnologías",
+      "item": [
+        {
+          "name": "Listar tecnologías",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tecnologias"
+          }
+        },
+        {
+          "name": "Crear tecnología",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Angular\",\n  \"categoria\": \"Frontend\",\n  \"version\": \"22\",\n  \"descripcion\": \"Framework para aplicaciones web\"\n}"
+            },
+            "url": "{{baseUrl}}/tecnologias"
+          }
+        },
+        {
+          "name": "Consultar tecnología por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tecnologias/:id"
+          }
+        },
+        {
+          "name": "Actualizar tecnología",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"version\": \"22.1\"\n}"
+            },
+            "url": "{{baseUrl}}/tecnologias/:id"
+          }
+        },
+        {
+          "name": "Eliminar tecnología",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/tecnologias/:id"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    }
+  ]
+}

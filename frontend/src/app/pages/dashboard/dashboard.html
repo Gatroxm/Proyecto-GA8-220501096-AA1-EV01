@@ -1,0 +1,74 @@
+<section class="page">
+
+  <div class="hero">
+    <h1 class="hero__title">GatroxM.dev</h1>
+    <p class="hero__tagline">Building Smart Software for the Future</p>
+  </div>
+
+  @if (cargando) {
+    <div class="load-state">
+      <span class="spinner"></span>
+      Cargando información...
+    </div>
+  } @else {
+    <div class="cards">
+      <div class="card">
+        <span class="card__value">{{ resumen.total }}</span>
+        <span class="card__label">Proyectos totales</span>
+      </div>
+      <div class="card card--blue">
+        <span class="card__value">{{ resumen.enProgreso }}</span>
+        <span class="card__label">En progreso</span>
+      </div>
+      <div class="card card--green">
+        <span class="card__value">{{ resumen.completados }}</span>
+        <span class="card__label">Completados / entregados</span>
+      </div>
+      <div class="card card--purple">
+        <span class="card__value">{{ resumen.tecnologiasRegistradas }}</span>
+        <span class="card__label">Tecnologías en uso</span>
+      </div>
+    </div>
+  }
+
+  @if (error) {
+    <p class="page__error">{{ error }}</p>
+  }
+
+  <div class="section">
+    <div class="section__header">
+      <h2>Proyectos recientes</h2>
+      <a routerLink="/proyectos" class="link">Ver todos →</a>
+    </div>
+
+    @if (proyectosRecientes.length === 0) {
+      <div class="empty-state">
+        <p>No hay registros disponibles.</p>
+        <a routerLink="/proyectos" class="btn btn--primary">Crear el primer proyecto</a>
+      </div>
+    } @else {
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Proyecto</th>
+              <th>Cliente</th>
+              <th>Estado</th>
+              <th>Tecnologías</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (proyecto of proyectosRecientes; track proyecto._id) {
+              <tr>
+                <td><strong>{{ proyecto.nombre }}</strong></td>
+                <td>{{ proyecto.cliente }}</td>
+                <td><app-estado-badge [estado]="proyecto.estado" /></td>
+                <td class="table__tecs">{{ nombreTecnologias(proyecto) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,67 @@
+<section class="page">
+
+  <div class="page__header">
+    <div>
+      <h1 class="page__title">Tecnologías</h1>
+      <p class="page__subtitle">Catálogo de tecnologías utilizadas en los proyectos de GatroxM.dev.</p>
+    </div>
+    <button class="btn btn--primary" (click)="abrirCrear()">+ Nueva tecnología</button>
+  </div>
+
+  <app-alert type="success" [message]="mensajeExito" />
+  <app-alert type="error" [message]="error" />
+
+  @if (mostrarFormulario) {
+    <div class="modal">
+      <div class="modal__box">
+        <div class="modal__header">
+          <h2>{{ tecnologiaEnEdicion ? 'Editar tecnología' : 'Nueva tecnología' }}</h2>
+          <button class="modal__close" (click)="cancelarFormulario()">✕</button>
+        </div>
+        <app-tecnologia-form
+          [tecnologia]="tecnologiaEnEdicion"
+          (guardar)="guardarTecnologia($event)"
+          (cancelar)="cancelarFormulario()" />
+      </div>
+    </div>
+  }
+
+  @if (cargando) {
+    <div class="load-state">
+      <span class="spinner"></span>
+      Cargando información...
+    </div>
+  } @else if (tecnologias.length === 0) {
+    <div class="empty-state">
+      <p>No hay registros disponibles.</p>
+      <button class="btn btn--primary" (click)="abrirCrear()">Crear la primera tecnología</button>
+    </div>
+  } @else {
+    <div class="tech-grid">
+      @for (tecnologia of tecnologias; track tecnologia._id) {
+        <div class="tech-card">
+          <div class="tech-card__head">
+            <div class="tech-card__avatar">{{ tecnologia.nombre.charAt(0).toUpperCase() }}</div>
+            <div class="tech-card__info">
+              <strong>{{ tecnologia.nombre }}</strong>
+              <span class="tech-card__categoria">{{ tecnologia.categoria }}</span>
+            </div>
+          </div>
+          @if (tecnologia.version) {
+            <p class="tech-card__version">Versión: {{ tecnologia.version }}</p>
+          }
+          @if (tecnologia.descripcion) {
+            <p class="tech-card__desc">{{ tecnologia.descripcion }}</p>
+          }
+          <p class="tech-card__count">
+            {{ conteoProyectos(tecnologia._id!) }} {{ conteoProyectos(tecnologia._id!) === 1 ? 'proyecto' : 'proyectos' }} asociados
+          </p>
+          <div class="tech-card__actions">
+            <button class="btn-icon btn-icon--edit" title="Editar" (click)="abrirEditar(tecnologia)">✎</button>
+            <button class="btn-icon btn-icon--delete" title="Eliminar" (click)="eliminarTecnologia(tecnologia)">🗑</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>

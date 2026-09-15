@@ -1,0 +1,74 @@
+<section class="page">
+
+  <div class="page__header">
+    <div>
+      <h1 class="page__title">Proyectos</h1>
+      <p class="page__subtitle">Gestione el portafolio de proyectos de software de GatroxM.dev.</p>
+    </div>
+    <button class="btn btn--primary" (click)="abrirCrear()">+ Nuevo proyecto</button>
+  </div>
+
+  <app-alert type="success" [message]="mensajeExito" />
+  <app-alert type="error" [message]="error" />
+
+  @if (mostrarFormulario) {
+    <div class="modal">
+      <div class="modal__box">
+        <div class="modal__header">
+          <h2>{{ proyectoEnEdicion ? 'Editar proyecto' : 'Nuevo proyecto' }}</h2>
+          <button class="modal__close" (click)="cancelarFormulario()">✕</button>
+        </div>
+        <app-proyecto-form
+          [proyecto]="proyectoEnEdicion"
+          [tecnologias]="tecnologias"
+          (guardar)="guardarProyecto($event)"
+          (cancelar)="cancelarFormulario()" />
+      </div>
+    </div>
+  }
+
+  @if (cargando) {
+    <div class="load-state">
+      <span class="spinner"></span>
+      Cargando información...
+    </div>
+  } @else if (proyectos.length === 0) {
+    <div class="empty-state">
+      <p>No hay registros disponibles.</p>
+      <button class="btn btn--primary" (click)="abrirCrear()">Crear el primer proyecto</button>
+    </div>
+  } @else {
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Proyecto</th>
+            <th>Cliente</th>
+            <th>Estado</th>
+            <th>Presupuesto</th>
+            <th>Tecnologías</th>
+            <th class="table__actions-head">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (proyecto of proyectos; track proyecto._id) {
+            <tr>
+              <td>
+                <strong>{{ proyecto.nombre }}</strong>
+                <small class="table__desc">{{ proyecto.descripcion }}</small>
+              </td>
+              <td>{{ proyecto.cliente }}</td>
+              <td><app-estado-badge [estado]="proyecto.estado" /></td>
+              <td>{{ proyecto.presupuesto ? (proyecto.presupuesto | currency: 'USD' : 'symbol' : '1.0-0') : '—' }}</td>
+              <td class="table__tecs">{{ nombreTecnologias(proyecto) }}</td>
+              <td class="table__actions">
+                <button class="btn-icon btn-icon--edit" title="Editar" (click)="abrirEditar(proyecto)">✎</button>
+                <button class="btn-icon btn-icon--delete" title="Eliminar" (click)="eliminarProyecto(proyecto)">🗑</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

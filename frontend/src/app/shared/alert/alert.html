@@ -1,0 +1,6 @@
+@if (message()) {
+  <div class="alert alert--{{ type() }}" role="alert">
+    <span class="alert__icon">{{ type() === 'success' ? '✓' : type() === 'error' ? '✕' : 'ℹ' }}</span>
+    <span class="alert__message">{{ message() }}</span>
+  </div>
+}

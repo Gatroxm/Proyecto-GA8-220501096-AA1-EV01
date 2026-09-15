@@ -1,0 +1,84 @@
+<form class="proyecto-form" [formGroup]="formulario" (ngSubmit)="guardarProyecto()">
+
+  <div class="proyecto-form__grid">
+    <div class="proyecto-form__field">
+      <label class="proyecto-form__label" for="nombre">Nombre del proyecto *</label>
+      <input id="nombre" class="proyecto-form__input" type="text" formControlName="nombre" placeholder="Ej: Sistema de inventario" />
+      @if (formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched) {
+        <span class="proyecto-form__error">El nombre es obligatorio (máx. 150 caracteres).</span>
+      }
+    </div>
+
+    <div class="proyecto-form__field">
+      <label class="proyecto-form__label" for="cliente">Cliente *</label>
+      <input id="cliente" class="proyecto-form__input" type="text" formControlName="cliente" placeholder="Ej: Empresa ABC" />
+      @if (formulario.get('cliente')?.invalid && formulario.get('cliente')?.touched) {
+        <span class="proyecto-form__error">El cliente es obligatorio.</span>
+      }
+    </div>
+  </div>
+
+  <div class="proyecto-form__field">
+    <label class="proyecto-form__label" for="descripcion">Descripción *</label>
+    <textarea id="descripcion" class="proyecto-form__input" rows="3" formControlName="descripcion" placeholder="Describe el alcance del proyecto..."></textarea>
+    @if (formulario.get('descripcion')?.invalid && formulario.get('descripcion')?.touched) {
+      <span class="proyecto-form__error">La descripción es obligatoria.</span>
+    }
+  </div>
+
+  <div class="proyecto-form__grid">
+    <div class="proyecto-form__field">
+      <label class="proyecto-form__label" for="estado">Estado *</label>
+      <select id="estado" class="proyecto-form__input" formControlName="estado">
+        @for (estado of estados; track estado) {
+          <option [value]="estado">{{ estado | titlecase }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="proyecto-form__field">
+      <label class="proyecto-form__label" for="presupuesto">Presupuesto (USD)</label>
+      <input id="presupuesto" class="proyecto-form__input" type="number" min="0" formControlName="presupuesto" />
+      @if (formulario.get('presupuesto')?.invalid && formulario.get('presupuesto')?.touched) {
+        <span class="proyecto-form__error">El presupuesto no puede ser negativo.</span>
+      }
+    </div>
+  </div>
+
+  <div class="proyecto-form__grid">
+    <div class="proyecto-form__field">
+      <label class="proyecto-form__label" for="fechaInicio">Fecha de inicio</label>
+      <input id="fechaInicio" class="proyecto-form__input" type="date" formControlName="fechaInicio" />
+    </div>
+
+    <div class="proyecto-form__field">
+      <label class="proyecto-form__label" for="fechaEntrega">Fecha de entrega</label>
+      <input id="fechaEntrega" class="proyecto-form__input" type="date" formControlName="fechaEntrega" />
+    </div>
+  </div>
+
+  <div class="proyecto-form__field">
+    <label class="proyecto-form__label">Tecnologías del proyecto</label>
+    <div class="proyecto-form__chips">
+      @for (tecnologia of tecnologias; track tecnologia._id) {
+        <button
+          type="button"
+          class="chip"
+          [class.chip--active]="estaSeleccionada(tecnologia._id)"
+          (click)="toggleTecnologia(tecnologia._id)">
+          {{ tecnologia.nombre }}
+          @if (tecnologia.version) { <small>({{ tecnologia.version }})</small> }
+        </button>
+      } @empty {
+        <span class="proyecto-form__empty">Aún no hay tecnologías registradas. Créalas desde el módulo Tecnologías.</span>
+      }
+    </div>
+  </div>
+
+  <div class="proyecto-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancelar.emit()">Cancelar</button>
+    <button type="submit" class="btn btn--primary" [disabled]="formulario.invalid">
+      {{ proyecto ? 'Actualizar proyecto' : 'Crear proyecto' }}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,41 @@
+<form class="tecnologia-form" [formGroup]="formulario" (ngSubmit)="guardarTecnologia()">
+
+  <div class="tecnologia-form__field">
+    <label class="tecnologia-form__label" for="nombre">Nombre *</label>
+    <input id="nombre" class="tecnologia-form__input" type="text" formControlName="nombre" placeholder="Ej: Angular" />
+    @if (formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched) {
+      <span class="tecnologia-form__error">El nombre es obligatorio (máx. 100 caracteres).</span>
+    }
+  </div>
+
+  <div class="tecnologia-form__field">
+    <label class="tecnologia-form__label" for="categoria">Categoría *</label>
+    <input id="categoria" class="tecnologia-form__input" type="text" formControlName="categoria" placeholder="Ej: Frontend" />
+    @if (formulario.get('categoria')?.invalid && formulario.get('categoria')?.touched) {
+      <span class="tecnologia-form__error">La categoría es obligatoria.</span>
+    }
+  </div>
+
+  <div class="tecnologia-form__field">
+    <label class="tecnologia-form__label" for="version">Versión</label>
+    <input id="version" class="tecnologia-form__input" type="text" formControlName="version" placeholder="Ej: 19.2" />
+    @if (formulario.get('version')?.invalid && formulario.get('version')?.touched) {
+      <span class="tecnologia-form__error">La versión no puede superar 50 caracteres.</span>
+    }
+  </div>
+
+  <div class="tecnologia-form__field">
+    <label class="tecnologia-form__label" for="descripcion">Descripción</label>
+    <textarea id="descripcion" class="tecnologia-form__input" rows="3" formControlName="descripcion" placeholder="Descripción breve..."></textarea>
+    @if (formulario.get('descripcion')?.invalid && formulario.get('descripcion')?.touched) {
+      <span class="tecnologia-form__error">La descripción no puede superar 500 caracteres.</span>
+    }
+  </div>
+
+  <div class="tecnologia-form__actions">
+    <button type="button" class="btn btn--ghost" (click)="cancelar.emit()">Cancelar</button>
+    <button type="submit" class="btn btn--primary" [disabled]="formulario.invalid">
+      {{ tecnologia ? 'Actualizar tecnología' : 'Crear tecnología' }}
+    </button>
+  </div>
+</form>
