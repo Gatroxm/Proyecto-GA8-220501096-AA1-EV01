@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProyectoService } from '../../services/proyecto.service';
@@ -18,7 +18,10 @@ export class Dashboard implements OnInit {
   cargando = true;
   error = '';
 
-  constructor(private proyectoService: ProyectoService) {}
+  constructor(
+    private proyectoService: ProyectoService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.cargarDashboard();
@@ -31,19 +34,23 @@ export class Dashboard implements OnInit {
       next: (resp) => {
         this.resumen = resp.data;
         this.cargando = false;
+        this.changeDetectorRef.markForCheck();
       },
       error: () => {
         this.error = 'No fue posible obtener la información.';
         this.cargando = false;
+        this.changeDetectorRef.markForCheck();
       }
     });
 
     this.proyectoService.listar().subscribe({
       next: (resp) => {
         this.proyectosRecientes = resp.data.slice(0, 5);
+        this.changeDetectorRef.markForCheck();
       },
       error: () => {
         this.proyectosRecientes = [];
+        this.changeDetectorRef.markForCheck();
       }
     });
   }

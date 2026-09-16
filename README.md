@@ -23,7 +23,7 @@ Evidencia **GA8-220501096-AA1-EV01** — "Desarrollar software a partir de la in
 - Morgan + Nodemon + dotenv
 
 **Testing**
-- Backend: Jest + Supertest mocks de Mongoose
+- Backend: Jest con mocks de Mongoose (15 pruebas unitarias)
 - Frontend: Angular Vitest (Karma-less) + HttpTestingController
 
 ## Arquitectura

@@ -12,7 +12,24 @@ const app = express();
 
 connectDB();
 
-app.use(cors({ origin: config.corsOrigin }));
+const isAllowedOrigin = (origin) => {
+  if (!origin || config.corsOrigin.includes(origin)) {
+    return true;
+  }
+
+  return (
+    config.nodeEnv !== 'production' &&
+    /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+  );
+};
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      callback(null, isAllowedOrigin(origin));
+    }
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

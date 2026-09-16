@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProyectoService } from '../../services/proyecto.service';
 import { TecnologiaService } from '../../services/tecnologia.service';
@@ -25,7 +25,8 @@ export class Proyectos implements OnInit {
 
   constructor(
     private proyectoService: ProyectoService,
-    private tecnologiaService: TecnologiaService
+    private tecnologiaService: TecnologiaService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -39,10 +40,12 @@ export class Proyectos implements OnInit {
       next: (resp) => {
         this.proyectos = resp.data;
         this.cargando = false;
+        this.changeDetectorRef.markForCheck();
       },
       error: () => {
         this.error = 'No fue posible obtener la información.';
         this.cargando = false;
+        this.changeDetectorRef.markForCheck();
       }
     });
     this.cargarTecnologias();
@@ -52,9 +55,11 @@ export class Proyectos implements OnInit {
     this.tecnologiaService.listar().subscribe({
       next: (resp) => {
         this.tecnologias = resp.data;
+        this.changeDetectorRef.markForCheck();
       },
       error: () => {
         this.tecnologias = [];
+        this.changeDetectorRef.markForCheck();
       }
     });
   }
@@ -84,9 +89,9 @@ export class Proyectos implements OnInit {
       this.proyectoService.actualizar(proyecto._id, proyecto).subscribe({
         next: () => {
           this.mensajeExito = 'Registro actualizado correctamente.';
-          this.mostrarFormulario = false;
-          this.proyectoEnEdicion = null;
+          this.cancelarFormulario();
           this.cargarDatos();
+          this.changeDetectorRef.markForCheck();
         },
         error: () => {
           this.error = 'No fue posible actualizar el proyecto.';
@@ -96,8 +101,9 @@ export class Proyectos implements OnInit {
       this.proyectoService.crear(proyecto).subscribe({
         next: () => {
           this.mensajeExito = 'Registro creado correctamente.';
-          this.mostrarFormulario = false;
+          this.cancelarFormulario();
           this.cargarDatos();
+          this.changeDetectorRef.markForCheck();
         },
         error: () => {
           this.error = 'No fue posible crear el proyecto.';

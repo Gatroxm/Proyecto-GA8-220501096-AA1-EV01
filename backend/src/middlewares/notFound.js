@@ -1,10 +1,8 @@
-const asyncHandler = require('../utils/asyncHandler');
-
-const metodoInexistente = (req, res) => {
-  res.status(405).json({
+const notFound = (req, res) => {
+  res.status(404).json({
     success: false,
-    message: `Método ${req.method} no permitido para ${req.originalUrl}`
+    message: `Ruta no encontrada: ${req.originalUrl}`
   });
 };
 
-module.exports = asyncHandler(metodoInexistente);
+module.exports = notFound;

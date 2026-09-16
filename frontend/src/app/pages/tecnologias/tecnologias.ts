@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TecnologiaService } from '../../services/tecnologia.service';
 import { ProyectoService } from '../../services/proyecto.service';
@@ -24,7 +24,8 @@ export class Tecnologias implements OnInit {
 
   constructor(
     private tecnologiaService: TecnologiaService,
-    private proyectoService: ProyectoService
+    private proyectoService: ProyectoService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -38,18 +39,22 @@ export class Tecnologias implements OnInit {
       next: (resp) => {
         this.tecnologias = resp.data;
         this.cargando = false;
+        this.changeDetectorRef.markForCheck();
       },
       error: () => {
         this.error = 'No fue posible obtener la información.';
         this.cargando = false;
+        this.changeDetectorRef.markForCheck();
       }
     });
     this.proyectoService.listar().subscribe({
       next: (resp) => {
         this.proyectos = resp.data;
+        this.changeDetectorRef.markForCheck();
       },
       error: () => {
         this.proyectos = [];
+        this.changeDetectorRef.markForCheck();
       }
     });
   }
@@ -79,9 +84,9 @@ export class Tecnologias implements OnInit {
       this.tecnologiaService.actualizar(tecnologia._id, tecnologia).subscribe({
         next: () => {
           this.mensajeExito = 'Registro actualizado correctamente.';
-          this.mostrarFormulario = false;
-          this.tecnologiaEnEdicion = null;
+          this.cancelarFormulario();
           this.cargarDatos();
+          this.changeDetectorRef.markForCheck();
         },
         error: () => {
           this.error = 'No fue posible actualizar la tecnología.';
@@ -91,8 +96,9 @@ export class Tecnologias implements OnInit {
       this.tecnologiaService.crear(tecnologia).subscribe({
         next: () => {
           this.mensajeExito = 'Registro creado correctamente.';
-          this.mostrarFormulario = false;
+          this.cancelarFormulario();
           this.cargarDatos();
+          this.changeDetectorRef.markForCheck();
         },
         error: () => {
           this.error = 'No fue posible crear la tecnología.';
