@@ -156,6 +156,36 @@ El proyecto utiliza Git y GitHub para control de versiones. El repositorio se in
 - README de documentación
 - Historial de commits por fases de la evidencia
 
+## Despliegue en Render
+
+El proyecto se despliega en Render como dos servicios independientes:
+
+| Servicio | Tipo | Root Directory | Build Command | Publish / Start |
+| -------- | ---- | -------------- | ------------- | --------------- |
+| `gatroxm-api` | Web Service (Node) | `backend` | `npm install` | `npm start` |
+| `gatroxm-frontend` | Static Site | `frontend` | `npm install && npm run build` | `dist/frontend/browser` |
+
+La base de datos se aloja en MongoDB Atlas (plan gratuito) porque Render no incluye MongoDB local.
+
+### Variables de entorno del backend en Render
+
+| Variable | Valor |
+| -------- | ----- |
+| `MONGODB_URI` | Cadena de conexión de MongoDB Atlas terminada en `/gatroxm` |
+| `NODE_ENV` | `production` |
+| `CORS_ORIGIN` | URL pública del frontend, por ejemplo `https://gatroxm-frontend.onrender.com` |
+
+`PORT` lo asigna Render automáticamente. Las credenciales nunca se suben a Git: se configuran en el dashboard de Render.
+
+### Consideraciones
+
+- El frontend debe apuntar a la API desplegada en `frontend/src/environments/environment.ts` (`apiUrl`).
+- En el Static Site se configura un rewrite de `/*` a `/index.html` para que funcione el enrutamiento de Angular.
+- En el plan gratuito el Web Service se suspende tras 15 minutos sin tráfico; la primera petición puede tardar cerca de un minuto.
+- Cada `git push` a `main` dispara un nuevo despliegue de ambos servicios.
+
+Alternativamente, el archivo `render.yaml` de la raíz define ambos servicios y permite crearlos juntos con **New + → Blueprint**.
+
 ## Entidades MongoDB
 
 - **Proyecto**: nombre, descripción, cliente, estado, presupuesto, fechas y tecnologías asociadas.

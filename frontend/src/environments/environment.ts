@@ -1,4 +1,6 @@
+// URL del backend desplegado en Render.
+// Si cambias el nombre del servicio en Render, actualiza esta URL.
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:3000/api'
+  apiUrl: 'https://gatroxm-api.onrender.com/api'
 };
